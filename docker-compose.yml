@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: webserver
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./template:/etc/nginx/nginx.conf
+      - ./server.crt:/ssl/server.cert
+      - ./server.key:/ssl/server.key
+    networks:
+      - frigate_network
+
+  frigate:
+    build:
+      dockerfile: "Dockerfile"
+      context: "."
+    container_name: frigate
+    restart: always
+    networks:
+      - frigate_network
+
+  mongo: 
+    image: mongo:latest 
+    container_name: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin-user
+      - MONGO_INITDB_ROOT_PASSWORD=admin-password
+      - MONGO_DB_USERNAME=admin-user1
+      - MONGO_DB_PASSWORD=admin-password1
+      - MONGO_DB=mean-contacts
+    volumes:
+      - ./mongo/db:/data/db
+    ports:
+      - "27017:27017" 
+    networks:
+      - frigate_network
+networks:
+    frigate_network:
+
