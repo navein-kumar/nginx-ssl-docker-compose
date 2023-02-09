@@ -3,7 +3,7 @@ version: "3"
 services:
   nginx:
     image: nginx:latest
-    container_name: webserver
+    container_name: nginx
     restart: unless-stopped
     ports:
       - 80:80
@@ -15,18 +15,9 @@ services:
     networks:
       - frigate_network
 
-  frigate:
-    build:
-      dockerfile: "Dockerfile"
-      context: "."
-    container_name: frigate
-    restart: always
-    networks:
-      - frigate_network
-
-  mongo: 
+  mongodb: 
     image: mongo:latest 
-    container_name: mongo
+    container_name: mongodb
     restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin-user
