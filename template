@@ -16,7 +16,7 @@ http {
     ssl_certificate /ssl/server.cert;
     ssl_certificate_key /ssl/server.key;
     location / {
-        proxy_pass http://frigate:8080;
+        proxy_pass http://mongodb:27017;
 
         
     }
